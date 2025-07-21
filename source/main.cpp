@@ -1,32 +1,31 @@
 ﻿#include <iostream>
+
 #include "include/termcolor.hpp"
-#include "game.h"
-#include "console.h"
+
+#include "SCSRPG_Game.h"
+#include "SCSRPG_Terminal.h"
 
 using namespace std;
-using namespace SCrystalStoneRPG;
+using namespace SCSRPG;
 
-static Game* game;
-
-static void start(void)
+static void Start(void)
 {
-	game = new Game();
-	game->Initialize();
+	Game::Initialize();
 }
 
-static void stop(void)
+static void Stop(void)
 {
-	delete game;
+	Game::Finish();
 }
 
 int main(void)
 {
 	cout << termcolor::reset;
 
-	Clear();
+	Terminal::Clear();
 
-	start();
-	stop();
+	Start();
+	Stop();
 
 	return 0;
 }
