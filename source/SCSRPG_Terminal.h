@@ -10,5 +10,6 @@ namespace SCSRPG
 	{
 		void Clear(void);
 		void Type(const string value, const uint16_t milliseconds);
+		void WaitForUserInput(bool showPrompt = true);
 	}
 }

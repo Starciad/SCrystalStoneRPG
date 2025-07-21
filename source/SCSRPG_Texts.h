@@ -8,17 +8,6 @@ namespace SCSRPG
 {
 	namespace Texts
 	{
-		// CHARS
-#if defined(_WIN32) || defined(_WIN64)
-		extern const string NEW_LINE;
-#elif defined(__APPLE__) && defined(__MACH__)
-		extern const char NEW_LINE;
-#elif defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-		extern const char NEW_LINE;
-#else
-		extern const char NEW_LINE;
-#endif
-
 		// INFOS
 		extern const string GAME_NAME;
 		extern const string GAME_VERSION;

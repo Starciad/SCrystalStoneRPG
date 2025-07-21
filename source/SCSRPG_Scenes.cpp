@@ -74,21 +74,10 @@ namespace SCSRPG
 		}
 
 		// ================================= //
-		// UTILITIES
-		static void WaitForUserInput(bool showPrompt = true)
-		{
-			if (showPrompt)
-			{
-				cout << "Press Any Key to Continue..." << endl;
-			}
-
-			cin.get();
-		}
-
 		// PRINTS
 		static void PrintGameLogo(void)
 		{
-			cout << Texts::DIVIDING_LINES[0] << Texts::NEW_LINE;
+			cout << Texts::DIVIDING_LINES[0] << Constants::NEW_LINE;
 
 			// =================== //
 
@@ -96,13 +85,13 @@ namespace SCSRPG
 			cout << termcolor::yellow;
 			cout << Texts::GAME_TITLE_BANNER;
 			cout << termcolor::reset;
-			cout << Texts::NEW_LINE << Texts::NEW_LINE;
+			cout << Constants::NEW_LINE << Constants::NEW_LINE;
 
 			// GAME LABEL
 			cout << termcolor::on_white << termcolor::grey;
-			cout << Texts::GAME_LABEL << Texts::NEW_LINE;
+			cout << Texts::GAME_LABEL << Constants::NEW_LINE;
 			cout << termcolor::reset;
-			cout << Texts::NEW_LINE;
+			cout << Constants::NEW_LINE;
 
 			// =================== //
 
@@ -126,12 +115,12 @@ namespace SCSRPG
 
 			for (uint8_t i = 0; i < 5; i++)
 			{
-				cout << Texts::NEW_LINE;
+				cout << Constants::NEW_LINE;
 			}
 
 			this_thread::sleep_for(chrono::seconds(2));
-			WaitForUserInput();
-
+			
+			Terminal::WaitForUserInput();
 			ShowScene(S_MAIN_MENU);
 		}
 
@@ -141,12 +130,12 @@ namespace SCSRPG
 
 			for (uint8_t i = 0; i < 5; i++)
 			{
-				cout << Texts::NEW_LINE;
+				cout << Constants::NEW_LINE;
 			}
 
-			cout << "[1] Start" << Texts::NEW_LINE;
-			cout << "[2] Credits" << Texts::NEW_LINE;
-			cout << "[3] Exit" << Texts::NEW_LINE;
+			cout << "[1] Start" << Constants::NEW_LINE;
+			cout << "[2] Credits" << Constants::NEW_LINE;
+			cout << "[3] Exit" << Constants::NEW_LINE;
 			cout << endl;
 
 			uint8_t option = 0;
@@ -177,7 +166,7 @@ namespace SCSRPG
 
 		static void ShowStoryScene(void)
 		{
-			cout << Texts::DIVIDING_LINES[2] << Texts::NEW_LINE << Texts::NEW_LINE;
+			cout << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE << Constants::NEW_LINE;
 			cout << termcolor::green;
 
 			for (uint8_t i = 0; i < Texts::STORY_PROPHECY_LENGTH; i++)
@@ -185,14 +174,15 @@ namespace SCSRPG
 				Terminal::Type(Texts::STORY_PROPHECY[i], Constants::DEFAULT_TYPING_SPEED_MILLISECONDS);
 
 				this_thread::sleep_for(chrono::seconds(1));
-				cout << Texts::NEW_LINE;
+				cout << Constants::NEW_LINE;
 			}
 
-			cout << Texts::NEW_LINE << Texts::DIVIDING_LINES[2] << Texts::NEW_LINE;
 			cout << termcolor::reset;
+			cout << Constants::NEW_LINE << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE << Constants::NEW_LINE;
 
-			this_thread::sleep_for(chrono::seconds(5));
-
+			this_thread::sleep_for(chrono::seconds(2));
+			
+			Terminal::WaitForUserInput();
 			ShowScene(S_CAMP);
 		}
 

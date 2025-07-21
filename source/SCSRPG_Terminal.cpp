@@ -2,6 +2,13 @@
 #include <iostream>
 #include <thread>
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <conio.h>
+#else
+#include <termios.h>
+#include <unistd.h>
+#endif
+
 #include "SCSRPG_Terminal.h"
 
 namespace SCSRPG
@@ -24,6 +31,34 @@ namespace SCSRPG
 				cout << value[i];
 				this_thread::sleep_for(chrono::milliseconds(milliseconds));
 			}
+		}
+
+#if !defined(_WIN32) && !defined(_WIN64)
+		static int getch_unix()
+		{
+			struct termios oldt, newt;
+			tcgetattr(STDIN_FILENO, &oldt);
+			newt = oldt;
+			newt.c_lflag &= ~(ICANON | ECHO);
+			tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+			int ch = getchar();
+			tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+			return ch;
+		}
+#endif
+
+		void WaitForUserInput(bool showPrompt)
+		{
+			if (showPrompt)
+			{
+				cout << "Press Any Key to Continue..." << endl;
+			}
+
+#if defined(_WIN32) || defined(_WIN64)
+			_getch();
+#else
+			getch_unix();
+#endif
 		}
 	}
 }
