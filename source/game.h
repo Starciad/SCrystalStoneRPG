@@ -2,7 +2,7 @@
 
 namespace SCrystalStoneRPG
 {
-	class Game
+	class Game final
 	{
 	public:
 

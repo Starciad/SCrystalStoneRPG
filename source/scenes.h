@@ -10,6 +10,7 @@ namespace SCrystalStoneRPG
 		S_INTRO,
 		S_MAIN_MENU,
 		S_CREDITS,
+		S_STORY,
 		S_CAMP,
 		S_BATTLE,
 	};

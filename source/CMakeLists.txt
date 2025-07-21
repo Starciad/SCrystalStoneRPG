@@ -25,4 +25,4 @@ add_executable (SCrystalStoneRPG
     "console.cpp"
     "scenes.cpp"
     "scenes.h"
-)
+ "textual_content.h")

@@ -6,6 +6,7 @@
 #include "console.h"
 #include "constants.h"
 #include "scenes.h"
+#include "textual_content.h"
 
 using namespace std;
 
@@ -13,14 +14,18 @@ namespace SCrystalStoneRPG
 {
 	static SCENE_INDEX currentSceneIndex;
 
+	// SCENES
 	static void ShowIntroScene(void);
 	static void ShowMainMenuScene(void);
 	static void ShowCreditsScene(void);
+	static void ShowStoryScene(void);
 	static void ShowCampScene(void);
 	static void ShowBattleScene(void);
 
 	void ShowScene(const SCENE_INDEX index)
 	{
+		cout << termcolor::reset;
+
 		Clear();
 
 		switch (index)
@@ -39,6 +44,10 @@ namespace SCrystalStoneRPG
 			case S_CREDITS:
 				ShowCreditsScene();
 				break;
+				
+			case S_STORY:
+				ShowStoryScene();
+				break;
 
 			case S_CAMP:
 				ShowCampScene();
@@ -51,6 +60,8 @@ namespace SCrystalStoneRPG
 			default:
 				break;
 		}
+
+		currentSceneIndex = index;
 	}
 
 	SCENE_INDEX GetCurrentScene(void)
@@ -59,43 +70,126 @@ namespace SCrystalStoneRPG
 	}
 
 	// ================================= //
+	// UTILITIES
+	static void WaitForUserInput(bool showPrompt = true)
+	{
+		if (showPrompt)
+		{
+			cout << "Press Any Key to Continue..." << endl;
+		}
+
+		cin.get();
+	}
+
+	// PRINTS
+	static void PrintGameLogo(void)
+	{
+		cout << DIVIDING_LINES[0] << NEW_LINE;
+
+		// =================== //
+		
+		// GAME LOGO
+		cout << termcolor::yellow;
+		cout << GAME_TITLE_BANNER;
+		cout << termcolor::reset;
+		cout << NEW_LINE << NEW_LINE;
+
+		// GAME LABEL
+		cout << termcolor::on_white << termcolor::grey;
+		cout << GAME_LABEL << NEW_LINE;
+		cout << termcolor::reset;
+		cout << NEW_LINE;
+
+		// =================== //
+
+		cout << DIVIDING_LINES[0];
+
+		cout << termcolor::reset;
+		cout << endl;
+	}
+
+	static void PrintInputDefaultMessage(const int min, const int max)
+	{
+		cout << "Enter the desired option (" << min << '-' << max << ')' << ": ";
+	}
+
+	// ================================= //
 	// SCENES
 
 	static void ShowIntroScene(void)
 	{
-		cout << '[' << string(120, '=') << ']' << endl;
-		cout << endl;
-		cout << "  _______  _______  ______    __   __  _______  _______  _______  ___      _______  _______  _______  __    _  _______ " << endl;
-		cout << " |       ||       ||    _ |  |  | |  ||       ||       ||   _   ||   |    |       ||       ||       ||  |  | ||       |" << endl;
-		cout << " |  _____||       ||   | ||  |  |_|  ||  _____||_     _||  |_|  ||   |    |  _____||_     _||   _   ||   |_| ||    ___|" << endl;
-		cout << " | |_____ |       ||   |_||_ |       || |_____   |   |  |       ||   |    | |_____   |   |  |  | |  ||       ||   |___ " << endl;
-		cout << " |_____  ||      _||    __  ||_     _||_____  |  |   |  |       ||   |___ |_____  |  |   |  |  |_|  ||  _    ||    ___|" << endl;
-		cout << "  _____| ||     |_ |   |  | |  |   |   _____| |  |   |  |   _   ||       | _____| |  |   |  |       || | |   ||   |___ " << endl;
-		cout << " |_______||_______||___|  |_|  |___|  |_______|  |___|  |__| |__||_______||_______|  |___|  |_______||_|  |__||_______|" << endl;
-		cout << endl;
-		cout << termcolor::on_white;
-		cout << termcolor::grey;
-		cout << "[ " << GAME_NAME << " - " << GAME_VERSION << " (C) " << GAME_AUTHOR << " - " << GAME_YEAR << " ]" << endl;
-		cout << termcolor::reset;
-		cout << endl;
-		cout << '[' << string(120, '=') << ']' << endl;
+		PrintGameLogo();
 
-		for (uint8_t i = 0; i < 8; i++)
+		for (uint8_t i = 0; i < 5; i++)
 		{
-			cout << endl;
+			cout << NEW_LINE;
 		}
 
 		this_thread::sleep_for(chrono::seconds(2));
-
-		cout << "Press Any Key to Continue..." << endl;
-		cin.get();
+		WaitForUserInput();
 
 		ShowScene(S_MAIN_MENU);
 	}
 
 	static void ShowMainMenuScene(void)
 	{
+		PrintGameLogo();
 
+		for (uint8_t i = 0; i < 5; i++)
+		{
+			cout << NEW_LINE;
+		}
+
+		cout << "[1] Start" << NEW_LINE;
+		cout << "[2] Credits" << NEW_LINE;
+		cout << "[3] Exit" << NEW_LINE;
+		cout << endl;
+
+		uint8_t option = 0;
+
+	INVALID_INPUT_LOOP:;
+		PrintInputDefaultMessage(1, 3);
+		cin >> option;
+
+		switch (option - '0')
+		{
+			case 1:
+				ShowScene(S_STORY);
+				break;
+
+			case 2:
+				ShowScene(S_CREDITS);
+				break;
+
+			case 3:
+				exit(0);
+				break;
+
+			default:
+				goto INVALID_INPUT_LOOP;
+				break;
+		}
+	}
+
+	static void ShowStoryScene(void)
+	{
+		cout << DIVIDING_LINES[2] << NEW_LINE << NEW_LINE;
+		cout << termcolor::green;
+
+		for (uint8_t i = 0, length = sizeof(STORY_PROPHECY) / sizeof(STORY_PROPHECY[0]); i < length; i++)
+		{
+			Type(STORY_PROPHECY[i], DEFAULT_TYPING_SPEED_MILLISECONDS);
+
+			this_thread::sleep_for(chrono::seconds(1));
+			cout << NEW_LINE;
+		}
+
+		cout << NEW_LINE << DIVIDING_LINES[2] << NEW_LINE;
+		cout << termcolor::reset;
+
+		this_thread::sleep_for(chrono::seconds(5));
+
+		ShowScene(S_CAMP);
 	}
 
 	static void ShowCreditsScene(void)

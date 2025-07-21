@@ -1,15 +1,16 @@
 ﻿#include <iostream>
+#include "include/termcolor.hpp"
 #include "game.h"
 #include "console.h"
 
 using namespace std;
 using namespace SCrystalStoneRPG;
 
-Game* game;
+static Game* game;
 
 static void start(void)
 {
-	game = new Game;
+	game = new Game();
 	game->Initialize();
 }
 
@@ -18,13 +19,14 @@ static void stop(void)
 	delete game;
 }
 
-int main()
+int main(void)
 {
+	cout << termcolor::reset;
+
 	Clear();
 
 	start();
 	stop();
 
-	cout << "Hello World!" << endl;
 	return 0;
 }
