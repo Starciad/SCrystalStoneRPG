@@ -60,5 +60,10 @@ namespace SCSRPG
 			getch_unix();
 #endif
 		}
+
+		void Sleep(const uint16_t milliseconds)
+		{
+			this_thread::sleep_for(chrono::milliseconds(milliseconds));
+		}
 	}
 }

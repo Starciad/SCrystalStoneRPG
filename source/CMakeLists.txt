@@ -36,7 +36,9 @@ endif()
 # Header files
 set(HEADERS
     "SCSRPG_Constants.h"
+    "SCSRPG_Entity.h"
     "SCSRPG_Game.h"
+    "SCSRPG_Player.h"
     "SCSRPG_Scenes.h"
     "SCSRPG_Terminal.h"
     "SCSRPG_Texts.h"
@@ -46,7 +48,9 @@ set(HEADERS
 set(SOURCES
     "main.cpp"
     "SCSRPG_Constants.cpp"
+    "SCSRPG_Entity.cpp"
     "SCSRPG_Game.cpp"
+    "SCSRPG_Player.cpp"
     "SCSRPG_Scenes.cpp"
     "SCSRPG_Terminal.cpp"
     "SCSRPG_Texts.cpp"

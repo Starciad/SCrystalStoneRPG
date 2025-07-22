@@ -1,4 +1,4 @@
-#include <chrono>
+#include <cctype>
 #include <iostream>
 #include <string>
 #include <thread>
@@ -6,6 +6,7 @@
 #include "include/termcolor.hpp"
 
 #include "SCSRPG_Constants.h"
+#include "SCSRPG_Game.h"
 #include "SCSRPG_Scenes.h"
 #include "SCSRPG_Terminal.h"
 #include "SCSRPG_Texts.h"
@@ -75,17 +76,16 @@ namespace SCSRPG
 
 		// ================================= //
 		// PRINTS
+
 		static void PrintGameLogo(void)
 		{
-			cout << Texts::DIVIDING_LINES[0] << Constants::NEW_LINE;
-
 			// =================== //
 
 			// GAME LOGO
 			cout << termcolor::yellow;
 			cout << Texts::GAME_TITLE_BANNER;
 			cout << termcolor::reset;
-			cout << Constants::NEW_LINE << Constants::NEW_LINE;
+			cout << Constants::NEW_LINE;
 
 			// GAME LABEL
 			cout << termcolor::on_white << termcolor::grey;
@@ -94,8 +94,6 @@ namespace SCSRPG
 			cout << Constants::NEW_LINE;
 
 			// =================== //
-
-			cout << Texts::DIVIDING_LINES[0];
 
 			cout << termcolor::reset;
 			cout << endl;
@@ -113,25 +111,15 @@ namespace SCSRPG
 		{
 			PrintGameLogo();
 
-			for (uint8_t i = 0; i < 5; i++)
-			{
-				cout << Constants::NEW_LINE;
-			}
-
-			this_thread::sleep_for(chrono::seconds(2));
-			
+			Terminal::Sleep(2000);
 			Terminal::WaitForUserInput();
+
 			ShowScene(S_MAIN_MENU);
 		}
 
 		static void ShowMainMenuScene(void)
 		{
 			PrintGameLogo();
-
-			for (uint8_t i = 0; i < 5; i++)
-			{
-				cout << Constants::NEW_LINE;
-			}
 
 			cout << "[1] Start" << Constants::NEW_LINE;
 			cout << "[2] Credits" << Constants::NEW_LINE;
@@ -166,35 +154,151 @@ namespace SCSRPG
 
 		static void ShowStoryScene(void)
 		{
-			cout << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE << Constants::NEW_LINE;
+			// SKIP?
+			uint8_t skipFlag = 0;
+
+			Terminal::Clear();
+			Terminal::Type("Would you like to skip the introductory text? [y/n]: ", 16);
+			
+			cin >> skipFlag;
+
+			switch (tolower(skipFlag))
+			{
+			case 'y':
+				ShowScene(S_CAMP);
+				break;
+
+			case 'n':
+				Terminal::Clear();
+				break;
+
+			default:
+				ShowScene(S_CAMP);
+				break;
+			}
+
+			// ==================== //
+
+			cout << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE;
 			cout << termcolor::green;
 
-			for (uint8_t i = 0; i < Texts::STORY_PROPHECY_LENGTH; i++)
-			{
-				Terminal::Type(Texts::STORY_PROPHECY[i], Constants::DEFAULT_TYPING_SPEED_MILLISECONDS);
-
-				this_thread::sleep_for(chrono::seconds(1));
-				cout << Constants::NEW_LINE;
-			}
+			Terminal::Type(Texts::STORY_PROPHECY, Constants::DEFAULT_TYPING_SPEED_MILLISECONDS);
 
 			cout << termcolor::reset;
 			cout << Constants::NEW_LINE << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE << Constants::NEW_LINE;
 
-			this_thread::sleep_for(chrono::seconds(2));
-			
+			Terminal::Sleep(2000);
 			Terminal::WaitForUserInput();
+
 			ShowScene(S_CAMP);
 		}
 
 		static void ShowCreditsScene(void)
 		{
+			cout << termcolor::yellow;
 
+			cout << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE;
+			cout << Texts::GAME_CREDITS << Constants::NEW_LINE;
+			cout << Texts::DIVIDING_LINES[2] << Constants::NEW_LINE << Constants::NEW_LINE;
+
+			cout << termcolor::reset;
+
+			Terminal::WaitForUserInput();
+			ShowScene(S_MAIN_MENU);
 		}
+
+		// ============================================ //
 
 		static void ShowCampScene(void)
 		{
+			cout << termcolor::reset;
 
+			// INTRODUCTION
+			if (Game::State->IsFirstTimeAtCamp)
+			{
+				Terminal::Type("[???]: \"...You! Wha... what is your name?\"", 32);
+				cout << Constants::NEW_LINE;
+
+				do
+				{
+					cout << Constants::NEW_LINE << "Enter a name (maximum 10 characters): ";
+
+					char name[11];
+
+					cin.getline(name, 10);
+
+					Game::Player->Name = string(name);
+				} while (Game::Player->Name.empty());
+
+				cout << Constants::NEW_LINE;
+
+				Terminal::Type("[???]: \"" + Game::Player->Name + "... " + Game::Player->Name + "...\"", 60);
+
+				Terminal::Sleep(1500);
+				cout << Constants::NEW_LINE;
+
+				Terminal::Type("[???]: \"...it is good to see someone has finally arrived...\"", 28);
+
+				Terminal::Sleep(1500);
+				cout << Constants::NEW_LINE;
+
+				Terminal::Type("[???]: \"...it is a great pleasure to meet you.\"", 32);
+
+				Terminal::Sleep(1500);
+				cout << Constants::NEW_LINE << Constants::NEW_LINE;
+
+				Terminal::Type("- You find yourself in a camp. You are seated on a wooden log. In the center, a fire burns brightly.", 16);
+
+				Terminal::Sleep(2500);
+				cout << Constants::NEW_LINE;
+
+				Terminal::Type("- The only sound you hear is the rustling of trees in the strong wind. It is a bit chilly here.", 16);
+
+				Terminal::Sleep(2500);
+				cout << Constants::NEW_LINE;
+
+				Terminal::Type("- Yet you are not alone. Just beyond the fire, on another log, sits a mysterious figure staring into the flames.", 16);
+
+				Terminal::Sleep(2500);
+				cout << Constants::NEW_LINE << Constants::NEW_LINE;
+
+				Terminal::Type("[???]: \"You may call me...\"", 50);
+
+				Terminal::Sleep(1500);
+				cout << Constants::NEW_LINE;
+
+				Terminal::Sleep(1500);
+				Terminal::Type("[David]: \"...David.\"", 40);
+
+				Terminal::Sleep(1500);
+				cout << Constants::NEW_LINE << Constants::NEW_LINE;
+
+				Game::State->IsFirstTimeAtCamp = false;
+
+				Terminal::WaitForUserInput();
+			}
+
+			// INITIAL INTERACTION
+			{
+				Terminal::Clear();
+
+				cout << Texts::DIVIDING_LINES[3] << Constants::NEW_LINE;
+
+				cout << termcolor::yellow;
+				cout << Texts::LANDSCAPE_MINIATURE;
+				cout << termcolor::reset;
+
+				cout << Constants::NEW_LINE << Constants::NEW_LINE;
+
+				Terminal::Type("You see..", 32);
+
+				cout << Constants::NEW_LINE << Constants::NEW_LINE;
+
+				Terminal::WaitForUserInput();
+			}
 		}
+
+		// ============================================ //
 
 		static void ShowBattleScene(void)
 		{

@@ -8,12 +8,13 @@ namespace SCSRPG
 {
 	namespace Texts
 	{
-		// INFOS
+		// GAME TEXTS
 		extern const string GAME_NAME;
 		extern const string GAME_VERSION;
 		extern const string GAME_AUTHOR;
 		extern const string GAME_YEAR;
 		extern const string GAME_LABEL;
+		extern const string GAME_CREDITS;
 
 		// CHARACTERS
 		extern const string DIVIDING_LINES[];
@@ -22,12 +23,13 @@ namespace SCSRPG
 		extern const string GAME_TITLE_BANNER;
 
 		// STORY
-		extern const uint8_t STORY_PROPHECY_LENGTH;
-		extern const string STORY_PROPHECY[];
+		extern const string STORY_PROPHECY;
 
 		// DIALOGUES
 
 		// OPTIONS
 
+		// MINIATURES
+		extern const string LANDSCAPE_MINIATURE;
 	}
 }
