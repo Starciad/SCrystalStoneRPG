@@ -9,7 +9,7 @@ if(POLICY CMP0079) # Allow target-based linking between subprojects
     cmake_policy(SET CMP0079 NEW)
 endif()
 
-project(SCrystalStoneRPG LANGUAGES C CXX)
+project(SCrystalStoneRPG LANGUAGES CXX)
 
 # Compiler configuration
 set(CMAKE_CXX_STANDARD 14)
