@@ -136,15 +136,15 @@ namespace SCSRPG
 			{
 			case 1:
 				ShowScene(S_STORY);
-				break;
+				return;
 
 			case 2:
 				ShowScene(S_CREDITS);
-				break;
+				return;
 
 			case 3:
 				exit(0);
-				break;
+				return;
 
 			default:
 				goto INVALID_INPUT_LOOP;
@@ -166,7 +166,7 @@ namespace SCSRPG
 			{
 			case 'y':
 				ShowScene(S_CAMP);
-				break;
+				return;
 
 			case 'n':
 				Terminal::Clear();
@@ -174,7 +174,7 @@ namespace SCSRPG
 
 			default:
 				ShowScene(S_CAMP);
-				break;
+				return;
 			}
 
 			// ==================== //
@@ -249,17 +249,17 @@ namespace SCSRPG
 
 				Terminal::Type("- You find yourself in a camp. You are seated on a wooden log. In the center, a fire burns brightly.", 16);
 
-				Terminal::Sleep(2500);
+				Terminal::Sleep(1500);
 				cout << Constants::NEW_LINE;
 
 				Terminal::Type("- The only sound you hear is the rustling of trees in the strong wind. It is a bit chilly here.", 16);
 
-				Terminal::Sleep(2500);
+				Terminal::Sleep(1500);
 				cout << Constants::NEW_LINE;
 
 				Terminal::Type("- Yet you are not alone. Just beyond the fire, on another log, sits a mysterious figure staring into the flames.", 16);
 
-				Terminal::Sleep(2500);
+				Terminal::Sleep(1500);
 				cout << Constants::NEW_LINE << Constants::NEW_LINE;
 
 				Terminal::Type("[???]: \"You may call me...\"", 50);
@@ -288,7 +288,7 @@ namespace SCSRPG
 				cout << Texts::LANDSCAPE_MINIATURE;
 				cout << termcolor::reset;
 
-				cout << Constants::NEW_LINE << Constants::NEW_LINE;
+				cout << Constants::NEW_LINE << Texts::DIVIDING_LINES[3] << Constants::NEW_LINE << Constants::NEW_LINE;
 
 				Terminal::Type("You see..", 32);
 
